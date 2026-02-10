@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ordine Confermato! 🎉</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+<style>
+        /* Animazione confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .success-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-card {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--gold);
+            position: relative;
+            z-index: 10;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .order-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            border: 1px solid #333;
+        }
+
+        .gigolo-mini {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #252525;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .gigolo-mini img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid var(--gold);
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .funny-disclaimer {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+</style>
+</head>
+<body>
+<div class="success-container">
+        <!-- Confetti animati -->
+<div id="confetti-container"></div>
+
+<div class="success-card text-center">
+<div class="success-icon">🎉</div>
+
+<h1 class="luxury-text mt-3 mb-2">Ordine Confermato!</h1>
+<p class="text-gold fw-bold mb-4">{{ messaggio }}</p>
+
+            {% if prodotti %}
+<div class="order-summary text-start">
+<h4 class="luxury-text h6 mb-3">📋 Riepilogo Ordine:</h4>
+                {% for p in prodotti %}
+<div class="gigolo-mini">
+<img src="{{ url_for('static', filename=p.foto) }}" alt="{{ p.nome }}">
+<div class="flex-grow-1">
+<strong class="d-block" style="color: #fff;">{{ p.nome }}</strong>
+<small class="text-gold">{{ p.prezzo }}€</small>
+</div>
+</div>
+                {% endfor %}
+
+<hr style="border-color: #444; margin: 15px 0;">
+
+<div class="d-flex justify-content-between align-items-center">
+<span class="text-uppercase text-muted" style="font-size: 0.9rem;">Totale:</span>
+<span class="h4 text-gold mb-0">{{ prodotti|sum(attribute='prezzo') }}€</span>
+</div>
+</div>
+            {% endif %}
+
+<div class="funny-disclaimer">
+<strong>⚠️ Disclaimer Importante:</strong><br>
+                Questa sera tutto ti è concesso, fai la scelta giusta e divertiti
+</div>
+
+<div class="mt-4 d-grid gap-3">
+<a href="/" class="btn btn-gold pulse">🏠 Torna alla Home</a>
+<a href="/checkout" class="btn btn-outline-light">🛒 Rivedi Carrello</a>
+</div>
+
+            <!-- EASTER EGG: messaggio nascosto -->
+<p class="mt-4 mb-0" style="font-size: 0.7rem; color: #333;">
+                Codice segreto per veri intenditori: prova "NERD69" o "STALKER50" al checkout 😏
+</p>
+</div>
+</div>
+
+<script>
+        // Genera confetti random
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti-container');
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confettiContainer.appendChild(confetti);
+            }
+        }
+
+        // Audio celebrativo (opzionale)
+        function playSuccessSound() {
+            const audio = new Audio('data:audio/wav;base64,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');
+            audio.play().catch(() => {}); // Ignora errori se il browser blocca l'audio
+        }
+
+        window.onload = () => {
+            createConfetti();
+            // playSuccessSound(); // Opzionale: attiva se vuoi il suono
+        };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

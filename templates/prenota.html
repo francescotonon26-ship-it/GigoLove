@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Prenota {{ gigolo.nome }}</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+<body>
+    <!-- GALLERIA FOTO SCROLLABILE -->
+<div class="photo-gallery-container">
+<div class="photo-gallery">
+        {% for foto in gigolo.foto_multiple %}
+<div class="photo-item">
+<img src="{{ url_for('static', filename=foto) }}" alt="{{ gigolo.nome }}" class="gallery-img">
+</div>
+        {% endfor %}
+</div>
+<div class="gallery-indicators">
+        {% for foto in gigolo.foto_multiple %}
+<span class="indicator" data-index="{{ loop.index0 }}"></span>
+        {% endfor %}
+</div>
+</div>
+
+<div class="booking-container">
+<a href="/" class="back-link">← Torna alla lista</a>
+
+<h1 class="luxury-text">{{ gigolo.nome }}</h1>
+<p class="text-muted mb-4"><i>"{{ gigolo.tagline }}"</i></p>
+
+<div class="row mb-4">
+<div class="col-6">
+<small class="text-uppercase text-muted d-block">Specialità</small>
+<span>{{ gigolo.specialita }}</span>
+</div>
+<div class="col-6">
+<small class="text-uppercase text-muted d-block">Tariffa</small>
+<span class="text-gold">{{ gigolo.prezzo }}€</span>
+</div>
+</div>
+
+        <!-- SEZIONE RECENSIONI -->
+<div class="recensioni-section mb-4">
+<h3 class="luxury-text h4 mb-3">
+                ⭐ Recensioni Clienti
+                <span class="badge bg-warning text-dark ms-2">{{ gigolo.media_recensioni }}/5</span>
+</h3>
+
+<div class="recensioni-container">
+                {% for recensione in gigolo.recensioni %}
+<div class="recensione-card">
+<div class="d-flex justify-content-between align-items-start mb-2">
+<div>
+<strong class="recensione-autore">{{ recensione.autore }}</strong>
+<div class="stelle-rating">
+                                    {% for i in range(recensione.voto) %}
+<span class="stella">⭐</span>
+                                    {% endfor %}
+</div>
+</div>
+<small class="text-muted">{{ recensione.data }}</small>
+</div>
+<p class="recensione-testo">{{ recensione.testo }}</p>
+</div>
+                {% endfor %}
+</div>
+</div>
+
+<hr style="border-color: #444;">
+
+        <!-- INFO AGGIUNTIVE -->
+<div class="info-extra mb-4">
+<h3 class="luxury-text h5 mb-3">📋 Cosa Include il Servizio</h3>
+<ul class="service-list">
+<li>✨ Presenza garantita per tutta la serata</li>
+<li>🍸 Conversazione brillante e sguardi intensi</li>
+<li>📸 Foto insieme per far ingelosire l'ex (opzionale)</li>
+<li>🎭 Massima discrezione e professionalità</li>
+<li>💃 Accompagnamento a eventi o feste</li>
+<li>🎁 Complimenti gratuiti illimitati</li>
+</ul>
+</div>
+
+        <!-- BOTTONE AGGIUNGI AL CARRELLO -->
+<div class="mb-4">
+<a href="{{ url_for('aggiungi_carrello', id=gigolo_id) }}" class="btn btn-gold w-100 py-3">
+                🛒 Aggiungi al Carrello
+</a>
+<p class="text-center mt-3" style="font-size: 0.85rem; color: #888;">
+                Potrai completare l'ordine al checkout con tutti i dettagli
+</p>
+</div>
+
+        <!-- EASTER EGG: Link nascosto -->
+<div class="text-center mt-5">
+<a href="/segreto" style="color: #1a1a1a; text-decoration: none; font-size: 0.7rem;">.</a>
+</div>
+</div>
+
+<script>
+    // ==================== GALLERIA FOTO SCROLLABILE ====================
+    const gallery = document.querySelector('.photo-gallery');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    // Aggiorna indicatori in base allo scroll
+    gallery.addEventListener('scroll', () => {
+        const scrollLeft = gallery.scrollLeft;
+        const itemWidth = gallery.querySelector('.photo-item').offsetWidth;
+        const currentIndex = Math.round(scrollLeft / itemWidth);
+        
+        indicators.forEach((indicator, index) => {
+            if (index === currentIndex) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+        });
+    });
+    
+    // Click su indicatori per navigare
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            const itemWidth = gallery.querySelector('.photo-item').offsetWidth;
+            gallery.scrollTo({
+                left: itemWidth * index,
+                behavior: 'smooth'
+            });
+        });
+    });
+    
+    // Inizializza primo indicatore come attivo
+    if (indicators.length > 0) {
+        indicators[0].classList.add('active');
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,749 @@
+/* ═══════════════════════════════════════════════════════════
+   GIGOLÒ PREMIUM - CSS OTTIMIZZATO PER IPHONE 16
+   ═══════════════════════════════════════════════════════════ */
+
+/* 1. VARIABILI E RESET */
+:root {
+    --gold: #FFD700;           /* Oro puro brillante */
+    --gold-dark: #d4af37;      /* Oro scuro per gradienti */
+    --dark-bg: #000000;        /* Nero puro OLED */
+    --card-bg: #1a1a1a;        /* Grigio scuro per card */
+    --pure-white: #ffffff;
+    --text-gray: #cccccc;
+    --border-subtle: #2a2a2a;
+    --shadow-strong: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--pure-white);
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Safe area per iPhone con notch */
+body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 2. TIPOGRAFIA */
+.luxury-text {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold) !important;
+    letter-spacing: 1.5px;
+    text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.3);
+    font-weight: 700;
+}
+
+h1.luxury-text {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 3. HERO SECTION */
+.hero {
+    min-height: 60vh;
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.5)), 
+                url('https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1000') center/cover;
+    background-attachment: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    border-bottom: 3px solid var(--gold);
+    position: relative;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: var(--text-gray);
+    max-width: 600px;
+    animation: fadeInUp 1s ease-out;
+}
+
+/* 4. CARD GIGOLO (HOME) */
+.profile-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 30px;
+    overflow: hidden;
+    box-shadow: var(--shadow-strong);
+}
+
+.profile-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+}
+
+.profile-img {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+.profile-card:hover .profile-img {
+    transform: scale(1.05);
+}
+
+.card-body {
+    padding: 25px;
+    background: linear-gradient(to bottom, var(--card-bg), #0f0f0f);
+}
+
+.card-body h3 {
+    color: var(--gold);
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.card-body p {
+    color: var(--pure-white) !important;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.card-text-quote {
+    font-style: italic;
+    color: var(--text-gray) !important;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    border-left: 3px solid var(--gold);
+}
+
+/* Etichette piccole */
+.card-body small {
+    color: var(--gold) !important;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    font-size: 0.75rem;
+}
+
+/* 5. BOTTONI */
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 100%);
+    color: #000 !important;
+    font-weight: 700;
+    border-radius: 50px;
+    padding: 16px 30px;
+    border: none;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    width: 100%;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-gold:hover,
+.btn-gold:active {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+}
+
+.btn-gold:active {
+    transform: translateY(0);
+}
+
+/* 6. PAGINA PRENOTA (DETAIL) */
+
+/* Galleria Foto Scrollabile */
+.photo-gallery-container {
+    position: relative;
+    width: 100%;
+    background: var(--dark-bg);
+    border-bottom: 4px solid var(--gold);
+}
+
+.photo-gallery {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.photo-gallery::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.photo-item {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 50vh;
+    max-height: 500px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Indicatori (pallini) sotto la galleria */
+.gallery-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.indicator:hover {
+    background: rgba(255, 215, 0, 0.7);
+    transform: scale(1.2);
+}
+
+.indicator.active {
+    background: var(--gold);
+    width: 30px;
+    border-radius: 15px;
+    border-color: var(--pure-white);
+}
+
+/* Vecchio stile detail-img rimosso */
+.detail-img {
+    width: 100%;
+    height: 50vh;
+    max-height: 500px;
+    object-fit: cover;
+    object-position: center;
+    border-bottom: 4px solid var(--gold);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.booking-container {
+    padding: 35px 25px 50px;
+    background: linear-gradient(to bottom, var(--card-bg), var(--dark-bg));
+    border-radius: 30px 30px 0 0;
+    margin-top: -40px;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
+}
+
+.booking-container h1 {
+    font-size: 2.3rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Row info (Specialità/Tariffa) */
+.row.mb-4 {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--border-subtle);
+}
+
+.row.mb-4 .col-6 {
+    padding: 10px;
+}
+
+/* Etichette premium */
+.text-uppercase.text-muted {
+    color: var(--gold) !important;
+    font-weight: 700 !important;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 8px;
+    opacity: 1 !important;
+}
+
+/* Valori premium (es. "Coding & Coccole") */
+.row.mb-4 span:not(.text-uppercase) {
+    color: var(--pure-white) !important;
+    font-size: 1.3rem !important;
+    font-weight: 600;
+    display: block;
+    line-height: 1.4;
+}
+
+.text-gold {
+    color: var(--gold) !important;
+    font-weight: 700 !important;
+}
+
+/* Tagline (frase sotto il nome) */
+.text-muted {
+    color: var(--pure-white) !important;
+    font-size: 1.1rem;
+    font-style: italic;
+    background: rgba(255, 215, 0, 0.1);
+    padding: 12px 15px;
+    border-radius: 12px;
+    display: block;
+    border-left: 4px solid var(--gold);
+    margin-bottom: 1.5rem;
+}
+
+/* Back link */
+.back-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--pure-white);
+    transform: translateX(-5px);
+}
+
+/* Separatore HR */
+hr {
+    border-color: var(--border-subtle) !important;
+    opacity: 1;
+    margin: 25px 0;
+}
+
+/* Titolo form */
+h3.h5 {
+    color: var(--gold) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 1.1rem !important;
+}
+
+/* 6.5 RECENSIONI */
+.recensioni-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 25px 20px;
+    border: 1px solid var(--border-subtle);
+}
+
+.recensioni-section h3 {
+    color: var(--gold) !important;
+    margin-bottom: 20px;
+}
+
+.recensioni-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Scrollbar personalizzata */
+.recensioni-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.recensioni-container::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 10px;
+}
+
+.recensioni-container::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 10px;
+}
+
+.recensione-card {
+    background: #252525;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+.recensione-card:hover {
+    background: #2a2a2a;
+    transform: translateX(5px);
+}
+
+.recensione-autore {
+    color: var(--gold);
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stelle-rating {
+    display: inline-block;
+    font-size: 0.9rem;
+}
+
+.stella {
+    color: #ffd700;
+    margin-right: 2px;
+}
+
+.recensione-testo {
+    color: var(--pure-white);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 10px 0 0 0;
+    font-style: italic;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+}
+
+/* Info Extra e Service List */
+.info-extra {
+    background: rgba(255, 215, 0, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid var(--border-subtle);
+}
+
+.info-extra h3 {
+    color: var(--gold) !important;
+    margin-bottom: 15px;
+}
+
+.service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.service-list li {
+    color: var(--pure-white);
+    padding: 10px 0;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.service-list li:last-child {
+    border-bottom: none;
+}
+
+.service-list li:hover {
+    padding-left: 10px;
+    color: var(--gold);
+}
+
+/* 7. FORM E INPUT */
+.form-label {
+    color: var(--gold) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control,
+.form-select {
+    background: #2a2a2a !important;
+    border: 2px solid #3a3a3a !important;
+    color: var(--pure-white) !important;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: #333 !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #777 !important;
+    font-style: italic;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Fix per select su iOS */
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23FFD700' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+/* 8. CHECKOUT E CARRELLO */
+.cart-badge {
+    position: fixed;
+    top: calc(20px + env(safe-area-inset-top));
+    right: 20px;
+    background: var(--gold);
+    color: #000;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    z-index: 1000;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.cart-badge:active {
+    transform: scale(0.95);
+}
+
+.checkout-item {
+    background: #252525;
+    border-radius: 15px;
+    padding: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.checkout-item h5 {
+    color: var(--pure-white) !important;
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.checkout-item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid var(--gold);
+}
+
+.checkout-item small {
+    color: var(--text-gray);
+    display: block;
+}
+
+/* 9. ANIMAZIONI */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 10. UTILITY CLASSES */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.py-3 { padding-top: 1rem; padding-bottom: 1rem; }
+.w-100 { width: 100%; }
+
+/* 11. MEDIA QUERIES - IPHONE 16 OTTIMIZZATO */
+
+/* iPhone 16 (393x852) e simili */
+@media (max-width: 430px) {
+    /* Hero */
+    .hero {
+        min-height: 55vh;
+        padding: 30px 15px;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    /* Cards */
+    .profile-img {
+        height: 350px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .card-body h3 {
+        font-size: 1.6rem;
+    }
+    
+    /* Detail page */
+    .detail-img {
+        height: 45vh;
+    }
+    
+    .gallery-img {
+        height: 45vh;
+    }
+    
+    .gallery-indicators {
+        bottom: 15px;
+        padding: 8px 15px;
+    }
+    
+    .indicator {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .indicator.active {
+        width: 24px;
+    }
+    
+    .booking-container {
+        padding: 30px 20px 40px;
+        margin-top: -35px;
+    }
+    
+    .booking-container h1 {
+        font-size: 2rem;
+    }
+    
+    h1.luxury-text {
+        font-size: 2rem;
+    }
+    
+    /* Form */
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Previene zoom su iOS */
+        padding: 12px 14px;
+    }
+    
+    /* Bottoni */
+    .btn-gold {
+        padding: 14px 25px;
+        font-size: 0.9rem;
+    }
+    
+    /* Container spacing */
+    .container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+    
+    /* Cart badge */
+    .cart-badge {
+        top: calc(15px + env(safe-area-inset-top));
+        right: 15px;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+}
+
+/* iPhone 16 Plus / Pro Max (430x932) */
+@media (min-width: 431px) and (max-width: 480px) {
+    .hero h1 {
+        font-size: 3.2rem;
+    }
+    
+    .profile-img {
+        height: 420px;
+    }
+    
+    .detail-img {
+        height: 48vh;
+    }
+}
+
+/* Landscape mode */
+@media (max-height: 450px) and (orientation: landscape) {
+    .hero {
+        min-height: 85vh;
+    }
+    
+    .detail-img {
+        height: 70vh;
+    }
+}
+
+/* Dark mode support (già dark di default) */
+@media (prefers-color-scheme: light) {
+    /* Il sito resta dark perché è il concept! */
+}
+
+/* Riduzione movimento per accessibilità */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
