@@ -359,60 +359,43 @@
         }
     }
 
-    /* ==================== REQUEST PERMISSION ==================== */
-    function requestMotionPermission() {
-        console.log("🔐 Requesting motion permission...");
-
-        if (typeof DeviceMotionEvent !== "undefined") {
-            // iOS 13+ richiede permesso esplicito
-            if (typeof DeviceMotionEvent.requestPermission === "function") {
-                console.log("📱 iOS detected - requesting permission");
-                
-                DeviceMotionEvent.requestPermission()
-                    .then(response => {
-                        console.log("Permission response:", response);
-                        
-                        if (response === "granted") {
-                            console.log("✅ PERMISSION GRANTED!");
-                            startListening();
-                        } else {
-                            console.error("❌ Permission denied:", response);
-                            alert("Permesso motion negato! Ricarica la pagina e accetta i permessi.");
-                        }
-                    })
-                    .catch(err => {
-                        console.error("❌ Permission error:", err);
-                        alert("Errore permessi: " + err.message);
-                    });
-            } else {
-                // Android o vecchi iOS
-                console.log("📱 Android/old iOS - no permission needed");
-                startListening();
-            }
+    /* ==================== ACTIVATE ON BUTTON CLICK ==================== */
+    permissionButton.addEventListener("click", () => {
+        console.log("🎯 Button clicked!");
+        
+        // iOS RICHIEDE CHE LA PERMISSION SIA CHIAMATA DIRETTAMENTE NEL CLICK
+        if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
+            console.log("📱 iOS - requesting permission NOW");
+            
+            // CHIAMATA DIRETTA - NON DELEGATA
+            DeviceMotionEvent.requestPermission()
+                .then(response => {
+                    console.log("✅ Permission response:", response);
+                    
+                    if (response === "granted") {
+                        console.log("🎉 PERMISSION GRANTED!");
+                        isListening = true;
+                        window.addEventListener("devicemotion", handleMotionEvent);
+                        permissionBackdrop.classList.add("hidden");
+                        console.log("👂 Motion listener ACTIVE - SCUOTI IL TELEFONO!");
+                    } else {
+                        console.error("❌ Permission denied");
+                        alert("Permesso negato! Ricarica e accetta.");
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ Permission error:", err);
+                    alert("Errore: " + err.message);
+                });
         } else {
-            console.error("❌ DeviceMotionEvent not supported!");
-            alert("Il tuo browser non supporta il motion detection!");
+            // Android o vecchi browser
+            console.log("📱 Android/Desktop - no permission needed");
+            isListening = true;
+            window.addEventListener("devicemotion", handleMotionEvent);
+            permissionBackdrop.classList.add("hidden");
+            console.log("👂 Motion listener ACTIVE - SCUOTI IL TELEFONO!");
         }
-    }
-
-    /* ==================== START LISTENING ==================== */
-    function startListening() {
-        console.log("👂 Starting motion listener...");
-        
-        isListening = true;
-        window.addEventListener("devicemotion", handleMotionEvent);
-        
-        // Nascondi backdrop
-        permissionBackdrop.classList.add("hidden");
-        
-        console.log("✅ Motion listener ACTIVE!");
-        console.log("🔊 Scuoti il telefono per attivare l'audio!");
-        
-        // Test immediato
-        setTimeout(() => {
-            console.log("🧪 Testing if motion events are firing...");
-        }, 1000);
-    }
+    });
 
     /* ==================== CLOSE AUDIO ==================== */
     closeAudioBtn.addEventListener("click", () => {
@@ -423,12 +406,6 @@
 
     audio.addEventListener("ended", () => {
         audioOverlay.classList.remove("show");
-    });
-
-    /* ==================== ACTIVATE ON BUTTON CLICK ==================== */
-    permissionButton.addEventListener("click", () => {
-        console.log("🎯 Button clicked - requesting permission...");
-        requestMotionPermission();
     });
 
     console.log("✅ Script fully loaded - click button to activate!");
