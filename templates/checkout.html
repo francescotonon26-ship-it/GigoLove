@@ -8,6 +8,104 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
 </head>
+{% if shake_enabled %}
+<!-- Audio segreto -->
+<audio id="fraAudio" src="{{ url_for('static', filename='audio/audio_serata_fra.mp3') }}"></audio>
+
+<!-- Icona audio -->
+<div id="audioOverlay">
+    <div id="audioIcon">🔊</div>
+    <div id="audioText">Fra è già in arrivo…</div>
+</div>
+
+<style>
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+}
+</style>
+{% endif %}
+
+{% if shake_enabled %}
+<script>
+let lastShakeTime = 0;
+let clickCount = 0;
+let clickTimer = null;
+
+const SHAKE_THRESHOLD = 15;
+const audio = document.getElementById("fraAudio");
+const overlay = document.getElementById("audioOverlay");
+
+/* 🔊 Avvia audio + overlay */
+function playAudio() {
+    audio.currentTime = 0;
+    audio.play().then(() => {
+        overlay.style.display = "flex";
+    }).catch(err => {
+        console.log("Audio non avviato:", err);
+    });
+}
+
+/* 🧹 Nasconde overlay quando l’audio finisce */
+audio.addEventListener("ended", () => {
+    overlay.style.display = "none";
+});
+
+/* 📱 Shake detection */
+function handleMotion(event) {
+    const acc = event.accelerationIncludingGravity;
+    if (!acc) return;
+
+    const magnitude = Math.sqrt(
+        acc.x * acc.x +
+        acc.y * acc.y +
+        acc.z * acc.z
+    );
+
+    const now = Date.now();
+    if (magnitude > SHAKE_THRESHOLD && now - lastShakeTime > 2000) {
+        lastShakeTime = now;
+        playAudio();
+    }
+}
+
+/* 🖱️ 4 click anywhere */
+function handleClick() {
+    clickCount++;
+
+    if (clickTimer) clearTimeout(clickTimer);
+    clickTimer = setTimeout(() => clickCount = 0, 1500);
+
+    if (clickCount === 4) {
+        playAudio();
+        clickCount = 0;
+    }
+}
+
+/* 🍎 iOS permission */
+function requestPermission() {
+    if (
+        typeof DeviceMotionEvent !== "undefined" &&
+        typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+        DeviceMotionEvent.requestPermission().then(response => {
+            if (response === "granted") {
+                window.addEventListener("devicemotion", handleMotion);
+            }
+        });
+    } else {
+        window.addEventListener("devicemotion", handleMotion);
+    }
+}
+
+document.addEventListener("click", handleClick);
+document.body.addEventListener("click", requestPermission, { once: true });
+</script>
+{% endif %}
+
+
+
 <body class="bg-black text-white">
 <div class="container py-5">
 <h1 class="luxury-text text-center mb-4">🛒 Il tuo Carrello</h1>

@@ -121,6 +121,11 @@ def checkout():
     prodotti_scelti = [GIGOLO_DB[id] for id in ids_nel_carrello if id in GIGOLO_DB]
     totale = sum(p['prezzo'] for p in prodotti_scelti)
     
+    shake_enabled = (
+        len(ids_nel_carrello) == 1 and
+        ids_nel_carrello[0] == "1"  # Fra ha id "1"
+        )
+
     sconto = 0
     messaggio_sconto = ""
     
@@ -146,7 +151,7 @@ def checkout():
         else:
             messaggio_sconto = "❌ Codice non valido. Riprova!"
     
-    return render_template('checkout.html', prodotti=prodotti_scelti, totale=totale, messaggio=messaggio_sconto)
+    return render_template('checkout.html', prodotti=prodotti_scelti, totale=totale, messaggio=messaggio_sconto,shake_enabled=shake_enabled)
 
 @app.route('/svuota')
 def svuota():
