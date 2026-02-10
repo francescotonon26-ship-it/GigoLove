@@ -56,6 +56,11 @@
 <h1 class="luxury-text" id="logo">GigoLove</h1>
 <p class="lead">L'élite del piacere per il tuo compleanno.</p>
 <a href="#staff" class="btn btn-gold px-4 mt-2">Sfoglia il Catalogo</a>
+
+    <!-- Scroll Indicator -->
+<div class="scroll-indicator">
+<span></span>
+</div>
 </header>
 
 <div class="container my-5" id="staff">
@@ -150,6 +155,14 @@
                 console.log('🏆 Hai scrollato 100 volte! Vero appassionato di gigolò! Vai su /segreto per scoprire tutti gli easter eggs!');
                 scrollCount = 0;
             }
+        });
+
+        // ==================== SMOOTH SCROLL PER INDICATORE ====================
+        document.querySelector('.scroll-indicator').addEventListener('click', function() {
+            document.querySelector('#staff').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         });
 </script>
 
