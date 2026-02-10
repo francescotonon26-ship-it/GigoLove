@@ -32,10 +32,10 @@ GIGOLO_DB = {
         "foto": "foto_unifocus/foto_fra1.jpg",  # Foto principale per la home
         "foto_multiple": [],  # Verrà popolato dinamicamente
         "recensioni": [
-            {"autore": "Sofia, 28", "voto": 5, "testo": "Ha debuggato il mio cuore e fixato la mia autostima. 10/10 consigliato!", "data": "15 Gen 2025"},
-            {"autore": "Martina, 31", "voto": 5, "testo": "Finalmente qualcuno che capisce i miei loop infiniti emotivi. Tornerò sicuramente!", "data": "8 Gen 2025"},
-            {"autore": "Chiara, 26", "voto": 4, "testo": "Ottimo servizio, anche se a volte parla troppo di Java. Ma ne vale la pena!", "data": "2 Gen 2025"},
-            {"autore": "Alessia, 29", "voto": 5, "testo": "Ha refactorato la mia vita sentimentale. Best investment ever.", "data": "28 Dic 2024"}
+            {"autore": "Sofia, 21", "voto": 5, "testo": "Ha debuggato il mio cuore e fixato la mia autostima. 10/10 consigliato!", "data": "15 Gen 2025"},
+            {"autore": "Martina, 23", "voto": 5, "testo": "Finalmente qualcuno che capisce i miei loop infiniti emotivi. Tornerò sicuramente!", "data": "8 Gen 2025"},
+            {"autore": "Chiara, 25", "voto": 4, "testo": "Ottimo servizio, anche se a volte parla troppo di Java. Ma ne vale la pena!", "data": "2 Gen 2025"},
+            {"autore": "Alessia, 19", "voto": 5, "testo": "Ha refactorato la mia vita sentimentale. Best investment ever.", "data": "28 Dic 2024"}
         ]
     },
     "2": {
@@ -47,9 +47,9 @@ GIGOLO_DB = {
         "foto": "foto_unifocus/foto_thomi1.jpg",
         "foto_multiple": [],
         "recensioni": [
-            {"autore": "Giulia, 25", "voto": 5, "testo": "Spritz perfetto, balli scatenati. Ha ballato la macarena come nessuno mai. Wow!", "data": "12 Gen 2025"},
-            {"autore": "Francesca, 27", "voto": 5, "testo": "Weekend indimenticabile. Lo spritz non era l'unica cosa che girava la testa 😏", "data": "5 Gen 2025"},
-            {"autore": "Elena, 30", "voto": 4, "testo": "Ottimo performer, ma troppo competitivo a Uno. Comunque promosso!", "data": "30 Dic 2024"}
+            {"autore": "Giulia, 23", "voto": 5, "testo": "Spritz perfetto, balli scatenati. Ha ballato la macarena come nessuno mai. Wow!", "data": "12 Gen 2025"},
+            {"autore": "Francesca, 21", "voto": 5, "testo": "Weekend indimenticabile. Lo spritz non era l'unica cosa che girava la testa 😏", "data": "5 Gen 2025"},
+            {"autore": "Elena, 20", "voto": 4, "testo": "Ottimo performer, ma troppo competitivo a Uno. Comunque promosso!", "data": "30 Dic 2024"}
         ]
     },
     "3": {
@@ -61,10 +61,10 @@ GIGOLO_DB = {
         "foto": "foto_unifocus/foto_pilo1.jpg",
         "foto_multiple": [],
         "recensioni": [
-            {"autore": "Anna, 24", "voto": 5, "testo": "Ha trasformato la mia noiosa serata in un rave illegale. Chef's kiss! 💋", "data": "10 Gen 2025"},
-            {"autore": "Laura, 32", "voto": 5, "testo": "Gin Lemon perfetto, conversazione ancora meglio. Ha persino pagato il taxi. Gentleman!", "data": "3 Gen 2025"},
-            {"autore": "Valentina, 26", "voto": 5, "testo": "Carisma da vendere. Letteralmente. L'ho noleggiato di nuovo la settimana dopo.", "data": "27 Dic 2024"},
-            {"autore": "Serena, 29", "voto": 4, "testo": "Eccellente, solo un po' troppo energico alle 4 del mattino. Ma adorabile!", "data": "20 Dic 2024"}
+            {"autore": "Anna, 21", "voto": 5, "testo": "Ha trasformato la mia noiosa serata in un rave illegale. Chef's kiss! 💋", "data": "10 Gen 2025"},
+            {"autore": "Laura, 52", "voto": 5, "testo": "Gin Lemon perfetto, conversazione ancora meglio. Ha persino pagato il taxi. Gentleman!", "data": "3 Gen 2025"},
+            {"autore": "Valentina, 46", "voto": 5, "testo": "Carisma da vendere. Letteralmente. L'ho noleggiato di nuovo la settimana dopo.", "data": "27 Dic 2024"},
+            {"autore": "Serena, 25", "voto": 4, "testo": "Eccellente, solo un po' troppo energico alle 4 del mattino. Ma adorabile!", "data": "20 Dic 2024"}
         ]
     }
 }
