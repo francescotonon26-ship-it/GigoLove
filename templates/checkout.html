@@ -10,6 +10,64 @@
 
 {% if shake_enabled %}
 <style>
+    /* Permission Button - MUST CLICK FIRST */
+    #permissionButton {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #d4af37, #FFD700);
+        color: #000;
+        padding: 20px 40px;
+        border-radius: 15px;
+        border: none;
+        font-size: 1.3rem;
+        font-weight: 700;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+        z-index: 10001;
+        cursor: pointer;
+        animation: pulse 2s infinite;
+        display: block;
+    }
+
+    #permissionButton.hidden {
+        display: none;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    /* Overlay Backdrop */
+    #permissionBackdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    #permissionBackdrop.hidden {
+        display: none;
+    }
+
+    #permissionText {
+        color: #FFD700;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        max-width: 80%;
+    }
+
+    /* Audio Player Overlay */
     #audioOverlay {
         display: none;
         position: fixed;
@@ -19,20 +77,21 @@
         background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
         border: 3px solid #FFD700;
         border-radius: 20px;
-        padding: 20px 30px;
-        box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6);
+        padding: 25px 30px;
+        box-shadow: 0 10px 40px rgba(255, 215, 0, 0.7);
         z-index: 10000;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        min-width: 280px;
+        min-width: 300px;
         animation: slideUp 0.5s ease-out;
+    }
+
+    #audioOverlay.show {
+        display: block;
     }
 
     @keyframes slideUp {
         from {
             opacity: 0;
-            transform: translateX(-50%) translateY(50px);
+            transform: translateX(-50%) translateY(100px);
         }
         to {
             opacity: 1;
@@ -41,26 +100,71 @@
     }
 
     #audioIcon {
-        font-size: 3rem;
-        animation: pulse 1.5s infinite;
+        font-size: 4rem;
+        text-align: center;
+        animation: spin 3s linear infinite;
+        margin-bottom: 15px;
     }
 
-    @keyframes pulse {
-        0%, 100% { 
-            transform: scale(1); 
-            opacity: 0.8; 
-        }
-        50% { 
-            transform: scale(1.2); 
-            opacity: 1; 
-        }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
     }
 
     #audioText {
         color: #FFD700;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         font-weight: 700;
         text-align: center;
+        margin-bottom: 15px;
+    }
+
+    #audioSubtext {
+        color: #ccc;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    #closeAudioBtn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: #FFD700;
+        font-size: 1.5rem;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Shake Indicator */
+    #shakeIndicator {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 215, 0, 0.2);
+        border: 2px solid #FFD700;
+        color: #FFD700;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        z-index: 9999;
+        animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    #shakeIndicator.hidden {
+        display: none;
     }
 </style>
 {% endif %}
@@ -69,15 +173,33 @@
 <body class="bg-black text-white">
 
 {% if shake_enabled %}
-<!-- Audio segreto -->
+<!-- Permission Backdrop -->
+<div id="permissionBackdrop">
+<div id="permissionText">
+        🎵 Messaggio Segreto Nascosto!<br>
+        <small style="font-size: 1rem;">Clicca per attivare il rilevamento shake</small>
+</div>
+<button id="permissionButton">
+        📱 ATTIVA SHAKE
+</button>
+</div>
+
+<!-- Shake Indicator -->
+<div id="shakeIndicator">
+    🔊 Shake attivo - Scuoti il telefono!
+</div>
+
+<!-- Audio Element -->
 <audio id="fraAudio" preload="auto">
 <source src="{{ url_for('static', filename='audio/audio_serata_fra.mp3') }}" type="audio/mpeg">
 </audio>
 
-<!-- Overlay audio -->
+<!-- Audio Player Overlay -->
 <div id="audioOverlay">
-<div id="audioIcon">🔊</div>
-<div id="audioText">Fra è già in arrivo…</div>
+<button id="closeAudioBtn">×</button>
+<div id="audioIcon">🎵</div>
+<div id="audioText">Messaggio da Fra</div>
+<div id="audioSubtext">L'audio sta partendo...</div>
 </div>
 {% endif %}
 
@@ -138,116 +260,178 @@
 
 {% if shake_enabled %}
 <script>
-    let lastX = null, lastY = null, lastZ = null;
-    let lastShakeTime = 0;
-    let clickCount = 0;
-    let clickTimer = null;
-
+    console.log("🎵 SHAKE EASTER EGG LOADED!");
+    
     const audio = document.getElementById("fraAudio");
-    const overlay = document.getElementById("audioOverlay");
+    const audioOverlay = document.getElementById("audioOverlay");
+    const permissionBackdrop = document.getElementById("permissionBackdrop");
+    const permissionButton = document.getElementById("permissionButton");
+    const shakeIndicator = document.getElementById("shakeIndicator");
+    const closeAudioBtn = document.getElementById("closeAudioBtn");
 
-    /* 🔊 Avvia audio + overlay */
+    let isListening = false;
+    let lastShakeTime = 0;
+    let shakeCount = 0;
+
+    // Variabili per accelerometro
+    let lastX = 0;
+    let lastY = 0;
+    let lastZ = 0;
+    let isFirstReading = true;
+
+    /* ==================== PLAY AUDIO ==================== */
     function playAudio() {
+        console.log("🔊 PLAYING AUDIO!");
+        
         audio.currentTime = 0;
-        audio.play().then(() => {
-            overlay.style.display = "flex";
-            console.log("✅ Audio avviato!");
-        }).catch(err => {
-            console.log("❌ Audio non avviato:", err);
-        });
+        audio.play()
+            .then(() => {
+                console.log("✅ Audio started successfully!");
+                audioOverlay.classList.add("show");
+                
+                // Vibrazione
+                if (navigator.vibrate) {
+                    navigator.vibrate([300, 100, 300, 100, 300]);
+                }
+            })
+            .catch(err => {
+                console.error("❌ Audio play failed:", err);
+                alert("Errore riproduzione audio: " + err.message);
+            });
     }
 
-    /* 🧹 Nasconde overlay quando l'audio finisce */
-    audio.addEventListener("ended", () => {
-        overlay.style.display = "none";
-    });
+    /* ==================== SHAKE DETECTION ==================== */
+    function handleMotionEvent(event) {
+        if (!isListening) return;
 
-    /* 📱 Shake detection */
-    function handleMotion(event) {
         const acc = event.accelerationIncludingGravity;
-        if (!acc) return;
-
-        if (lastX === null) {
-            lastX = acc.x;
-            lastY = acc.y;
-            lastZ = acc.z;
+        if (!acc || acc.x === null) {
+            console.log("⚠️ No acceleration data");
             return;
         }
 
-        const deltaX = Math.abs(acc.x - lastX);
-        const deltaY = Math.abs(acc.y - lastY);
-        const deltaZ = Math.abs(acc.z - lastZ);
+        const x = acc.x || 0;
+        const y = acc.y || 0;
+        const z = acc.z || 0;
 
-        lastX = acc.x;
-        lastY = acc.y;
-        lastZ = acc.z;
+        if (isFirstReading) {
+            lastX = x;
+            lastY = y;
+            lastZ = z;
+            isFirstReading = false;
+            console.log("📊 First reading:", { x, y, z });
+            return;
+        }
 
-        const delta = deltaX + deltaY + deltaZ;
+        const deltaX = Math.abs(x - lastX);
+        const deltaY = Math.abs(y - lastY);
+        const deltaZ = Math.abs(z - lastZ);
+        const totalDelta = deltaX + deltaY + deltaZ;
 
-        console.log("SHAKE Δ:", delta.toFixed(2)); // DEBUG
+        lastX = x;
+        lastY = y;
+        lastZ = z;
 
+        // Log OGNI movimento (così vedi se funziona)
+        if (totalDelta > 5) {
+            console.log("📱 Movement detected:", totalDelta.toFixed(2));
+        }
+
+        // SHAKE THRESHOLD - abbassato a 12 per essere più sensibile
         const now = Date.now();
-        if (delta > 15 && now - lastShakeTime > 2000) {
-            lastShakeTime = now;
-            console.log("🎉 SHAKE RILEVATO!");
-            playAudio();
+        if (totalDelta > 12) {
+            shakeCount++;
+            console.log("🌟 SHAKE DETECTED! Count:", shakeCount, "Delta:", totalDelta.toFixed(2));
             
-            // Vibrazione
-            if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200]);
+            // Dopo 2 shake in 1 secondo -> ATTIVA AUDIO
+            if (shakeCount >= 2 && now - lastShakeTime < 1000) {
+                console.log("🎉🎉🎉 SHAKE THRESHOLD REACHED! PLAYING AUDIO!");
+                playAudio();
+                shakeCount = 0;
             }
+            
+            lastShakeTime = now;
+        }
+
+        // Reset shake count dopo 1 secondo
+        if (now - lastShakeTime > 1000) {
+            shakeCount = 0;
         }
     }
 
-    /* 🖱️ 4 click anywhere come fallback */
-    function handleClick() {
-        clickCount++;
+    /* ==================== REQUEST PERMISSION ==================== */
+    function requestMotionPermission() {
+        console.log("🔐 Requesting motion permission...");
 
-        if (clickTimer) clearTimeout(clickTimer);
-        clickTimer = setTimeout(() => clickCount = 0, 1500);
-
-        console.log("Click count:", clickCount);
-
-        if (clickCount === 4) {
-            console.log("🎉 4 CLICK RILEVATI!");
-            playAudio();
-            clickCount = 0;
-        }
-    }
-
-    /* 🍎 iOS permission */
-    function requestPermission() {
-        console.log("Richiedo permessi motion...");
-        
-        if (
-            typeof DeviceMotionEvent !== "undefined" &&
-            typeof DeviceMotionEvent.requestPermission === "function"
-        ) {
-            DeviceMotionEvent.requestPermission()
-                .then(response => {
-                    console.log("Permission response:", response);
-                    if (response === "granted") {
-                        window.addEventListener("devicemotion", handleMotion);
-                        console.log("✅ Motion listener attivo (iOS)");
-                    }
-                })
-                .catch(err => {
-                    console.error("Errore permission:", err);
-                });
+        if (typeof DeviceMotionEvent !== "undefined") {
+            // iOS 13+ richiede permesso esplicito
+            if (typeof DeviceMotionEvent.requestPermission === "function") {
+                console.log("📱 iOS detected - requesting permission");
+                
+                DeviceMotionEvent.requestPermission()
+                    .then(response => {
+                        console.log("Permission response:", response);
+                        
+                        if (response === "granted") {
+                            console.log("✅ PERMISSION GRANTED!");
+                            startListening();
+                        } else {
+                            console.error("❌ Permission denied:", response);
+                            alert("Permesso motion negato! Ricarica la pagina e accetta i permessi.");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("❌ Permission error:", err);
+                        alert("Errore permessi: " + err.message);
+                    });
+            } else {
+                // Android o vecchi iOS
+                console.log("📱 Android/old iOS - no permission needed");
+                startListening();
+            }
         } else {
-            // Android o browser desktop
-            window.addEventListener("devicemotion", handleMotion);
-            console.log("✅ Motion listener attivo (Android)");
+            console.error("❌ DeviceMotionEvent not supported!");
+            alert("Il tuo browser non supporta il motion detection!");
         }
     }
 
-    // Attiva listener click
-    document.addEventListener("click", handleClick);
+    /* ==================== START LISTENING ==================== */
+    function startListening() {
+        console.log("👂 Starting motion listener...");
+        
+        isListening = true;
+        window.addEventListener("devicemotion", handleMotionEvent);
+        
+        // Nascondi backdrop
+        permissionBackdrop.classList.add("hidden");
+        
+        console.log("✅ Motion listener ACTIVE!");
+        console.log("🔊 Scuoti il telefono per attivare l'audio!");
+        
+        // Test immediato
+        setTimeout(() => {
+            console.log("🧪 Testing if motion events are firing...");
+        }, 1000);
+    }
 
-    // Richiedi permessi al primo click
-    document.body.addEventListener("click", requestPermission, { once: true });
+    /* ==================== CLOSE AUDIO ==================== */
+    closeAudioBtn.addEventListener("click", () => {
+        audio.pause();
+        audio.currentTime = 0;
+        audioOverlay.classList.remove("show");
+    });
 
-    console.log("🎵 Script shake attivato - Fra nel carrello!");
+    audio.addEventListener("ended", () => {
+        audioOverlay.classList.remove("show");
+    });
+
+    /* ==================== ACTIVATE ON BUTTON CLICK ==================== */
+    permissionButton.addEventListener("click", () => {
+        console.log("🎯 Button clicked - requesting permission...");
+        requestMotionPermission();
+    });
+
+    console.log("✅ Script fully loaded - click button to activate!");
 </script>
 {% endif %}
 
