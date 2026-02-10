@@ -57,14 +57,27 @@ function handleMotion(event) {
     const acc = event.accelerationIncludingGravity;
     if (!acc) return;
 
-    const magnitude = Math.sqrt(
-        acc.x * acc.x +
-        acc.y * acc.y +
-        acc.z * acc.z
-    );
+    if (lastX === null) {
+        lastX = acc.x;
+        lastY = acc.y;
+        lastZ = acc.z;
+        return;
+    }
+
+    const deltaX = Math.abs(acc.x - lastX);
+    const deltaY = Math.abs(acc.y - lastY);
+    const deltaZ = Math.abs(acc.z - lastZ);
+
+    lastX = acc.x;
+    lastY = acc.y;
+    lastZ = acc.z;
+
+    const delta = deltaX + deltaY + deltaZ;
+
+    console.log("SHAKE Δ:", delta); // DEBUG iOS
 
     const now = Date.now();
-    if (magnitude > SHAKE_THRESHOLD && now - lastShakeTime > 2000) {
+    if (delta > 15 && now - lastShakeTime > 2000) {
         lastShakeTime = now;
         playAudio();
     }
