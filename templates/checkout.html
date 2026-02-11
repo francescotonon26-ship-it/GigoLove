@@ -15,7 +15,7 @@
         position: fixed;
         bottom: 30px;
         right: 30px;
-        font-size: 4rem;
+        font-size: 5rem;
         z-index: 10000;
         animation: float 2s ease-in-out infinite;
         display: none;
@@ -63,7 +63,7 @@
 </audio>
 
 <!-- Simple Audio Icon -->
-<div id="audioIcon">🎵</div>
+<div id="audioIcon">🔊</div>
 {% endif %}
 
 <div class="container py-5">
@@ -93,7 +93,7 @@
 
 <form method="POST" class="mt-4" id="discountForm">
 <div class="input-group">
-<input type="text" name="codice_sconto" id="discountInput" class="form-control" placeholder="Codice Sconto (es. ALICE20, NERD69...)">
+<input type="text" name="codice_sconto" id="discountInput" class="form-control" placeholder="Codice Sconto (es. ALICE20{% if shake_enabled %}, TWERK{% endif %}...)">
 <button class="btn btn-outline-warning" type="submit">Applica</button>
 </div>
 <small class="text-muted d-block mt-2" style="font-size: 0.75rem;">
@@ -142,26 +142,37 @@
 
     /* ==================== PLAY AUDIO ==================== */
     function playAudio() {
-        console.log("🔊 PLAYING AUDIO!");
+        console.log("🔊 AUDIO WILL START IN 3 SECONDS...");
         
-        audio.currentTime = 0;
-        
-        // Mostra icona PRIMA di fare play
+        // Mostra icona SUBITO
         audioIcon.classList.add("show");
         audioIcon.classList.add("playing");
         
-        audio.play()
-            .then(() => {
-                console.log("✅ Audio started successfully!");
-                
-                // Vibrazione
-                if (navigator.vibrate) {
-                    navigator.vibrate([300, 100, 300, 100, 300]);
-                }
-            })
-            .catch(err => {
-                console.error("❌ Audio play failed:", err);
-            });
+        // Vibrazione iniziale
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200]);
+        }
+        
+        // ASPETTA 3 SECONDI PRIMA DI PARTIRE
+        setTimeout(() => {
+            console.log("🎵 PLAYING AUDIO NOW!");
+            audio.currentTime = 0;
+            
+            audio.play()
+                .then(() => {
+                    console.log("✅ Audio started successfully!");
+                    
+                    // Vibrazione quando parte davvero
+                    if (navigator.vibrate) {
+                        navigator.vibrate([300, 100, 300]);
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ Audio play failed:", err);
+                    audioIcon.classList.remove("playing");
+                    audioIcon.classList.remove("show");
+                });
+        }, 3000); // 3 secondi di delay
     }
 
     /* ==================== SHAKE DETECTION ==================== */
@@ -218,10 +229,10 @@
     discountForm.addEventListener("submit", (e) => {
         const code = discountInput.value.trim().toUpperCase();
         
-        if (code === "SHAKE") {
+        if (code === "TWERK") {
             e.preventDefault(); // Blocca submit
             
-            console.log("🎯 SHAKE code entered!");
+            console.log("🎯 TWERK code entered!");
             
             // iOS permission request
             if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
@@ -238,11 +249,11 @@
                             
                             // Feedback visivo
                             discountInput.value = "";
-                            discountInput.placeholder = "✅ Shake attivato! Scuoti il telefono!";
+                            discountInput.placeholder = "✅ Twerk attivato! Scuoti il telefono!";
                             discountInput.style.borderColor = "#FFD700";
                             
                             setTimeout(() => {
-                                discountInput.placeholder = "Codice Sconto (es. ALICE20, NERD69...)";
+                                discountInput.placeholder = "Codice Sconto (es. ALICE20, TWERK...)";
                                 discountInput.style.borderColor = "";
                             }, 3000);
                         } else {
@@ -260,11 +271,11 @@
                 window.addEventListener("devicemotion", handleMotionEvent);
                 
                 discountInput.value = "";
-                discountInput.placeholder = "✅ Shake attivato! Scuoti il telefono!";
+                discountInput.placeholder = "✅ Twerk attivato! Scuoti il telefono!";
                 discountInput.style.borderColor = "#FFD700";
                 
                 setTimeout(() => {
-                    discountInput.placeholder = "Codice Sconto (es. ALICE20, NERD69...)";
+                    discountInput.placeholder = "Codice Sconto (es. ALICE20, TWERK...)";
                     discountInput.style.borderColor = "";
                 }, 3000);
             }
@@ -285,7 +296,7 @@
         audioIcon.classList.remove("show");
     });
 
-    console.log("✅ Script ready - insert code SHAKE to activate!");
+    console.log("✅ Script ready - insert code TWERK to activate!");
 </script>
 {% endif %}
 
